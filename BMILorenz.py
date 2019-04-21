@@ -3,6 +3,8 @@
 
 
 import numpy as np
+import yaml
+
 
 from BMI import BMI
 #from scipy import ndimage
@@ -49,19 +51,23 @@ class BMILorenz (BMI):
         self._origin = (0., 0.)
 
 
-    def initialize (self):
+    def initialize (self, settingsFile):
 
-        self._dt = 1e-3
+        # Read settings YAML file
+        with open(settingsFile, 'r') as stream:
+            settings = yaml.load(stream)
+
+        self._dt = settings['dt']
         self._t = 0.
-        self._startTime = 0.
-        self._endTime = 20.
+        self._startTime = settings['startTime']
+        self._endTime = settings['endTime']
         
-        self._J = 40
-        self._F = 8.0
+        self._J = settings['J']
+        self._F = settings['F']
 
 
 
-        self._state = np.zeros(self._J)
+        self._state = settings['startState']
        
 
         self._value['state'] = "_state"
