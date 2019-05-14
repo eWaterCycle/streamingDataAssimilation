@@ -55,7 +55,7 @@ class BMILorenz (BMI):
 
         # Read settings YAML file
         with open(settingsFile, 'r') as stream:
-            settings = yaml.load(stream)
+            settings = yaml.safe_load(stream)
 
         self._dt = settings['dt']
         self._t = 0.
