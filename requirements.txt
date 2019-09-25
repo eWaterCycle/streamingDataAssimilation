@@ -2,4 +2,4 @@ matplotlib
 pandas
 numpy
 pyyaml
-ray[debug]
+ray[dashboard]
