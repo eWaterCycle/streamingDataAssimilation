@@ -43,9 +43,9 @@ class BMILorenz (BMI):
         self._endTime = 0.
 
         self._state = None
-        
+
         self._value = {}
-        
+
         self._shape = (0, 0)
         self._spacing = (0., 0.)
         self._origin = (0., 0.)
@@ -55,20 +55,21 @@ class BMILorenz (BMI):
 
         # Read settings YAML file
         with open(settingsFile, 'r') as stream:
-            settings = yaml.safe_load(stream)
+            # settings = yaml.safe_load(stream) # generates an error
+            settings = yaml.load(stream, Loader=yaml.Loader) # solves the issue
 
         self._dt = settings['dt']
         self._t = 0.
         self._startTime = settings['startTime']
         self._endTime = settings['endTime']
-        
+
         self._J = settings['J']
         self._F = settings['F']
 
 
 
         self._state = settings['startState']
-       
+
 
         self._value['state'] = "_state"
 
@@ -76,16 +77,16 @@ class BMILorenz (BMI):
         self._spacing = (1., 1.)
         self._origin = (0., 0.)
 
-        
+
 
     def update (self):
         if self._t >= self._endTime:
             raise "endTime already reached, model not updated"
         self._state = self._state + rk4(self._state, self._dt, self._F)
-        
+
         self._t += self._dt
 
-                
+
     def update_until (self, t):
         if (t<self._t) or t>self._endTime:
             raise "wrong time input: smaller than model time or larger than endTime"
@@ -113,7 +114,7 @@ class BMILorenz (BMI):
     def set_value (self, long_var_name, src):
         val = self.get_value (long_var_name)
         val[:] = src
-		
+
     def set_value_at_indices (self, long_var_name, indices, src):
         val = self.get_value (long_var_name)
         val[indices] = src
@@ -189,8 +190,8 @@ class BMILorenz (BMI):
         raise("method not implemented")
     def get_grid_nodes_per_face(self, grid, nodes_per_face):
         raise("method not implemented")
-    
-        
+
+
 
 def main():
     import doctest
